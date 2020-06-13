@@ -1,0 +1,31 @@
+<!-- See https://clarity.design/documentation/login for documentation -->
+<div class="login-wrapper">
+
+  <form clrForm class="login">
+
+    <section class="title">
+        <h1 class="welcome">Welcome to Füllstack hiring exercise</h1>
+
+        <h5 class="hint">
+          Now starts the part where you demonstrate your skills that you can build
+          solid web applications.
+        </h5>
+    </section>
+
+    <div class="login-group">
+      <clr-input-container>
+        <label class="clr-sr-only">Email</label>
+        <input clrInput type="email" name="login" placeholder="Email" [(ngModel)]="loginDetails.email" />
+      </clr-input-container>
+
+      <clr-input-container>
+        <label class="clr-sr-only">Password</label>
+        <input clrInput type="password" name="password" placeholder="Password" [(ngModel)]="loginDetails.password" />
+      </clr-input-container>
+
+      <button class="btn btn-primary" type="button" (click)="login()">Sign in</button>
+
+      <a href="javascript://" class="signup">Sign up for a new accoount</a>
+    </div>
+  </form>
+</div>

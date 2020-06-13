@@ -1,0 +1,53 @@
+<div class="main-container">
+	<header class="header">
+		<div class="branding">
+			<a class="nav-link">
+				<!-- <img class="brand-mark" src="../assets/brand-mark.png"> -->
+				<span class="title">Füllstack</span>
+			</a>
+		</div>
+
+    <!--
+		<div class="header-nav">
+			<a class="active nav-link nav-text">Home</a>
+		</div>
+    -->
+
+    <div class="header-actions">
+
+      <clr-dropdown *ngIf="user !== null">
+
+        <button class="nav-text" clrDropdownTrigger>
+          <clr-icon shape="user"></clr-icon>
+          {{ user }}
+        </button>
+
+        <!-- https://clarity.design/documentation/dropdowns -->
+        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+
+          <div  [clrDisabled]="true" clrDropdownItem>
+            Profile
+          </div>
+
+          <div  [clrDisabled]="true" clrDropdownItem>
+            Billing
+          </div>
+
+          <a (click)="logout()" clrDropdownItem>Log out</a>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+
+    </div>
+	</header>
+
+  <div class="content-container spinner-container background-filler" *ngIf="loadingState == loadingStates.fetchingStoredUser">
+    <div class="center">
+      <clr-spinner>Loading</clr-spinner>
+      <h2>Loading</h2>
+    </div>
+  </div>
+
+  <div class="content-container" *ngIf="loadingState == loadingStates.loaded">
+    <router-outlet></router-outlet>
+  </div>
+</div>
