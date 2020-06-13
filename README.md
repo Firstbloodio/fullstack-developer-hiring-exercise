@@ -54,17 +54,17 @@ We will look
 
 # Project description
 
-The projec contains
+The project contains
 
-- `frontend` folder that includes Angular 9 application
+- `frontend` folder that includes Angular 9 application with [Clarity Design System](https://clarity.design/) components and theme
 
-- `backend` folder that includes NestJS application
+- `backend` folder that includes [NestJS application](https://nestjs.com/)
 
 # Prerequisites
 
-* Node v12
+* Node v12 LTS
 
-* `ng` for angular 9
+* Globally installed `ng` command for Angular 9
 
 # Installation
 
@@ -72,10 +72,22 @@ The projec contains
 
 ## Running frontend
 
+You can start the frontend as:
+
+```sh
+( cd frontend && ng server )
+```
+
+
+
 ## Running backend
 
 ## Running tests
 
 # Further reading
+
+# Artwork
+
+Photo by JESHOOTS.COM on Unsplash.
 
 
