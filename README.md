@@ -23,8 +23,11 @@ Your task is to create a registration form for Angular 9 + NestJS application. W
     so understand this when designing null keys and unique value constrains
 
 - End-to-end tests that exercises both frontend and backend
-  - Registration succeeded test
-  - Registration failed test
+  - Registrating user and confirming the the registration via sent confirmation link success
+  - Registrating user and confirming the the registration via sent confirmation fails due to a link timeout
+  - Cannot register same email twice
+  - Cannot register invalid email
+  - Cannot register with invalid password - see repo for the valid password rules
 
 - Pull request which will be reviewed
   - Contains screenshots detailing the changes
@@ -60,13 +63,54 @@ The project contains
 
 - `backend` folder that includes [NestJS application](https://nestjs.com/)
 
-# Prerequisites
+- `database` contains docker files to ramp up the PostgreSQL instance needed for the exercise
+
+# Installation
+
+## Prerequisites
+
+* Linux or macOS
 
 * Node v12 LTS
 
 * Globally installed `ng` command for Angular 9
 
-# Installation
+* Docker
+
+## Setting up PostgreSQL database
+
+This is will make a new PostgreSQL running in the standard port 5432.
+Please shutdown any previous conflicting PostgreSQL instances before starting this.
+
+```bash
+( cd database && docker-compose up -d )
+```
+
+Check the database is up
+
+```bash
+docker logs -f local_db
+```
+
+Check that you can log into a database with `psql`
+
+```bash
+docker exec -it local_db psql -U local_dev local_db
+```
+
+## Creating the initial database
+
+You need to have the backend installed
+
+```bash
+( cd backend && npm install )
+```
+
+Run initial migrations to set up initial database tables
+
+```bash
+( cd backend && npm run migration:run )
+```
 
 # Development
 
@@ -78,9 +122,15 @@ You can start the frontend as:
 ( cd frontend && ng server )
 ```
 
-
+The frontend will open without the backend being up, but as soon as you start working with you need to have the backend up'n'running.
 
 ## Running backend
+
+You can start the backend as:
+
+```sh
+( cd backend && npm run start )
+```
 
 ## Running tests
 
