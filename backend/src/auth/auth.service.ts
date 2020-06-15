@@ -52,7 +52,8 @@ export class AuthService {
       throw new CannotLogIn(`The email address ${email} has not been verified or the user log in is disabled`);
     }
 
-    if(user.isRightPassword(pass)) {
+    const match = await user.isRightPassword(pass);
+    if(match) {
       return user;
     } else {
       throw new InvalidPassword(`Incorrect password`);
