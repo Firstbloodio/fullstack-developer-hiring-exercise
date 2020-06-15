@@ -64,6 +64,22 @@ describe('End-to-end tests for full stack exercise', () => {
     expect(errorCategory).toEqual('InvalidPassword');
   });
 
+  it('should display user information in dashboard', async () => {
+    await browser.get(browser.baseUrl);
+    await fillField('login', 'testing@example.com');
+    await fillField('password', 'test123');
+    await element(by.css('.btn-sign-in')).click();
+    // Check we are on the right page
+    const headingDashboard = element(by.css('#heading-dashboard'));
+    expect(headingDashboard.isDisplayed()).toBe(true);
+    // Grab data from table
+    const email = await element(by.css('#user-email')).getText()
+    expect(email).toEqual('testing@example.com');
+    const displayName = await element(by.css('#user-display-name')).getText()
+    expect(displayName).toEqual('Test-Moo');
+
+  });
+
   it('should log out', async () => {
     await browser.get(browser.baseUrl);
     // See testing.controller.ts
@@ -77,7 +93,7 @@ describe('End-to-end tests for full stack exercise', () => {
     await logout.click();
     // Back to the home screen after logout
     const headingHome = element(by.css('.heading-welcome'));
-    expect(headingHome.isPresent()).toBe(true);
+    expect(headingHome.isDisplayed()).toBe(true);
   });
 
   afterEach(async () => {
