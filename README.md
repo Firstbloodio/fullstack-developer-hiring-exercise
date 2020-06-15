@@ -12,7 +12,13 @@ This is a software development exercise for a FirstBlood Technologies full stack
 
 ## Your task
 
-Your task is to create a registration form for Angular 9 + NestJS application. We estimate this will take 3-4 hours for a person who is familiar with the technology stack. The stack is the same that you would be using in your work.
+Your task is to create a registration form for Angular 9 + NestJS application.
+We estimate this will take 3-4 hours for a person who is familiar with the technology stack.
+The application skeleton and instructions are well prepared, but expect extra 4-6 hours
+if you are not familiar with Angular, NestJS or TypeORM.
+The technology stack is the same that you will be using in when working us.
+
+Task:
 
 - Add a registration screen to an existing Angular application skeleton
   - We need to input the following from the new users:
@@ -21,21 +27,22 @@ Your task is to create a registration form for Angular 9 + NestJS application. W
     - Display name
     - Phone number in an international plus prefixed format, like `+1 555 1231234`
   - Use your best practices and Clarity Design System examples to come up
-    a basic layout form this screen
+    a basic non-ugly layout for this screen
 
-- Add a phone number to the dashboard screen, so that users can see their registered phone number
+- Add a phone number to the existing dashboard screen, so that users can see their registered phone number
 
-- Add server-side entity validation for the registration data using NestJS backend
+- Add server-side validation for the registration data
   - Validation must catch basic error cases
   - Saved phone numbers must be normalized by removing any spaces or dashes or other
     special characters users may use when entering a phone number, like `+15551231234`
   - The registration screen must be user friendly and correctly
-    reflect any given input error back to the user
+    reflect any given input error back to the user, preferably
+    to the related input field
 
 - Add TypeORM migrations for all of the above
   - The phone number column does not yet exist in the database
-  - Migration is applied on the existing database with existing records,
-    so you need to make a decision how to handle existing users without phone number
+  - Migration is applied on the existing database with existing user records,
+    so you need to make a decision how to handle existing phone numberless user data
 
 - Add end-to-end tests for the new registration functionality
   - Registration success and a user can log in
@@ -62,7 +69,7 @@ Your task is to create a registration form for Angular 9 + NestJS application. W
 - [ ] Invite a Github user `miohtama` to your repository
 - [ ] Send email to `mikko@fb.io` that you have completed the exercise
 
-## How you will be ranked
+## How your exercise submission will be ranked
 
 We will look
 
@@ -77,7 +84,7 @@ We will look
 
 The project contains
 
-- `frontend` folder that includes Angular 9 application with [Clarity Design System](https://clarity.design/) components and theme
+- `frontend` folder that includes Angular 9 application
 
 - `backend` folder that includes [NestJS application](https://nestjs.com/)
 
@@ -87,7 +94,7 @@ The project contains
 
 - ORM: TypeORM on PostgreSQL
 
-- UI toolkit: Clarity Design System
+- UI toolkit: [Clarity Design System](https://clarity.design/)
 
 - Authentication: JWT tokens based on NestJS tutorial
 
@@ -107,7 +114,7 @@ The project contains
 
 * Node v12 LTS
 
-* Globally installed `ng` command for Angular 9
+* Globally (`npm install -g`) installed `ng` and `nest` commands
 
 * Docker
 
@@ -162,6 +169,8 @@ Create a user you can use for the initial login
 
 ## Running frontend
 
+Frontend runs in port 4200.
+
 You can start the frontend as:
 
 ```sh
@@ -172,13 +181,15 @@ The frontend will open without the backend being up, but as soon as you start wo
 
 ## Running backend
 
+Backend runs in port 3000.
+
 You can start the backend as:
 
 ```sh
 ( cd backend && npm run start:dev )
 ```
 
-Backend is mapped to the frontend application in `http://localhost:4200/api` through Angular proxy configuration.
+Backend is proxied to the frontend application in `http://localhost:4200/api` through Angular proxy configuration.
 
 Swagger UI is available at http://localhost:3000/swagger/ to directly test API calls against the backend.
 
@@ -221,11 +232,11 @@ Currently Visual Studio Code debugger does not work directly with `ng e2e`.
 
 To debug tests
 
-- Turn on the debugger auto attach in Visual Studio Code through the command palette
+- Turn on the debugger *Auto Attach* in Visual Studio Code through the command palette
 - Start `ng serve` in one terminal to have Angular frontend running for Protractor
 - In another terminal, run `node --inspect-brk node_modules/.bin/protractor e2e/protractor.conf.js`
   and now Visual Studio Code will stop in breakpoints set in the test files
-- You can use Web Console Inspector in Protractor's Chrome instance to figure out state of the forms and buttons for the e2e tests
+- You can use Web Console Inspector in Protractor's Chrome instance to figure out the state of the forms and buttons for the e2e tests
 
 What does not work
 
