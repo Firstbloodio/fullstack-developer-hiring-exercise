@@ -15,25 +15,43 @@ This is a software development exercise for a FirstBlood Technologies full stack
 Your task is to create a registration form for Angular 9 + NestJS application. We estimate this will take 3-4 hours for a person who is familiar with the technology stack. The stack is the same that you would be using in your work.
 
 - Add a registration screen to an existing Angular application skeleton
+  - We need to input the following from the new users:
+    - Email
+    - Password
+    - Display name
+    - Phone number in international plus prefixed format
+  - Use your best practices and Clarity Design System examples to come up
+    a basic layout form this screen
 
-- Server-side entity and validation for the registration data using NestJS backend
+- Add phone to the dashboard screen, so that users can see their registered phone number
 
-- PostgreSQL migrations for all of the above
-  - Must be applied on the existing database with existing records,
-    so understand this when designing null keys and unique value constrains
+- Add server-side entity validation for the registration data using NestJS backend
+  - Validation must catch basic error cases
+  - Saved phone numbers must be normalized by removing any spaces or dashes or other
+    special characters users may use when entering a phone number
+  - The registration screen must be user friendly and correctly
+    reflect any given input error back to the user
 
-- End-to-end tests that exercises both frontend and backend
-  - Registrating user and confirming the the registration via sent confirmation link success
-  - Registrating user and confirming the the registration via sent confirmation fails due to a link timeout
-  - Cannot register same email twice
+- Add TypeORM migrations for all of the above
+  - The phone number column does not yet exist in the database
+  - Migration is applied on the existing database with existing records,
+    so you need to make a decision how to handle existing users without phone number
+
+- Add end-to-end tests for the new registration functionality
+  - Registration success and a user can log in
+    - Note that there is an email verification mechanism present,
+      you may shortcut this for this exercise and consider all emails automatically valid
+  - Cannot register the same email twice
   - Cannot register invalid email
-  - Cannot register with invalid password - see repo for the valid password rules
+  - Cannot register with invalid password - must be at least 6 characters
+  - Cannot register invalid phone number
+  - Dashboard displays the registered phone number to user
 
 - Pull request which will be reviewed
-  - Contains screenshots detailing the changes
-  - Contains migration instructions
-  - Contains instructions for an internal QA team how to manually test the application,
-    assuming they can run the application locally on their PC
+  - Contains screenshots of changed screens
+  - Contains instructions how to apply TypeORM migrations
+  - Contains instructions for an internal QA team (the exercise author, or me) how to manually test your pull request
+    assuming they run the application locally on their computer
 
 ## How to submit the exercise
 
@@ -42,7 +60,7 @@ Your task is to create a registration form for Angular 9 + NestJS application. W
 - [ ] Create a new pull request against your private repository
 - [ ] In the PR, write down number of hours you spent on this exercise (we do not use this to rank you, we use it to adjust the laborisity of future exercises)
 - [ ] Invite a Github user `miohtama` to your repository
-- [ ] Send email to `dev-careers@fb.io` that you have completed the exercise
+- [ ] Send email to `mikko@fb.io` that you have completed the exercise
 
 ## How you will be ranked
 
@@ -213,21 +231,6 @@ What does not work
 
 - `node --inspect-brk node_modules/.bin/ng`: For some reason breakpoints get ignored if `ng e2e` is run directly
 - Running Protractor without starting a frontend manually: `ng e2e` is responsible for doing Angular setup
-
-To launch `ng e2e` in debug mode you can add the following example to your launch configurations:
-
-```json
-    {
-      "name": "Fullstack ng e2e",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/frontend/node_modules/protractor/bin/protractor",
-      "protocol": "inspector",
-      "args": ["${workspaceFolder}/frontend/e2e/protractor.conf.js"],
-      "runtimeExecutable": "/Users/moo/.nvm/versions/node/v12.16.1/bin/node"
-    }
-```
-
 
 ## Migrations
 
