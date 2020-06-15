@@ -65,6 +65,22 @@ The project contains
 
 - `database` contains docker files to ramp up the PostgreSQL instance needed for the exercise
 
+# Features
+
+- ORM: TypeORM on PostgreSQL
+
+- UI toolkit: Clarity Design System
+
+- Authentication: JWT tokens based on NestJS tutorial
+
+- User: Email and password flow with confirming the email address by a verification link
+
+- Frontend logging: ngx-logger
+
+- API documentation: Swagger
+
+- Integration testing: Protractor
+
 # Installation
 
 ## Prerequisites
@@ -144,7 +160,9 @@ You can start the backend as:
 ( cd backend && npm run start:dev )
 ```
 
-Swagger UI is available at http://localhost:3000/api/ to directly test API calls against the backend.
+Backend is mapped to the frontend application in `http://localhost:4200/api` through Angular proxy configuration.
+
+Swagger UI is available at http://localhost:3000/swagger/ to directly test API calls against the backend.
 
 ## Running tests
 

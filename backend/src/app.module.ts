@@ -10,6 +10,7 @@ import { jwtConstants } from './auth/constants';
 import { LocalStrategy } from './auth/local.strategy';
 import { TestingController } from './testing/testing.controller';
 import * as ormConfig from './config/ormConfig';
+import { JwtStrategy } from './auth/jwt.strategy';
 
 @Module({
   imports: [
@@ -20,11 +21,11 @@ import * as ormConfig from './config/ormConfig';
 
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '24h' },
     }),
   ],
   controllers: [AppController, TestingController],
-  providers: [UserService, AppService, AuthService, LocalStrategy],
+  providers: [UserService, AppService, AuthService, LocalStrategy, JwtStrategy],
 })
 export class AppModule {}
 

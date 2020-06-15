@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Post, Request, Body, UseFilters } from '@nestjs/common';
+import { Controller, Get, UseGuards, Post, Request, Body, UseFilters, Logger } from '@nestjs/common';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
@@ -6,6 +6,8 @@ import { ApiOperation, ApiCreatedResponse, ApiBody, ApiBearerAuth, ApiProperty, 
 import { IsEmail } from 'class-validator';
 import { AuthService } from './auth/auth.service';
 import { APIHttpExceptionFilter } from './http-exception.filter';
+import { UserService } from './user/user.service';
+import { UserOwnInfoDto } from './user/user.dto';
 
 
 /**
@@ -19,7 +21,6 @@ export class LoginDetails {
   @ApiProperty()
   readonly password: string;
 }
-
 
 /**
  * Describe login to swagger
@@ -35,7 +36,6 @@ export class UserDetails {
   @ApiProperty()
   readonly publicId: string;
 }
-
 
 /**
  * Login reply.
@@ -53,7 +53,11 @@ export class AuthInfo {
 @UseFilters(new APIHttpExceptionFilter())  // Nice error handling
 export class AppController {
 
-  constructor(private readonly appService: AppService, private authService: AuthService) {}
+  constructor(
+    private readonly appService: AppService,
+    private authService: AuthService,
+    private userService: UserService) {
+  }
 
   @Get()
   getHello(): string {
@@ -62,24 +66,18 @@ export class AppController {
 
   @ApiOperation({ summary: "Log in a user and return session JWT token" })
   @ApiOkResponse({ description: 'Received session token',})
-  // @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Body() data: LoginDetails): Promise<AuthInfo> {
     return this.authService.login(data);
   }
 
-  @ApiOperation({ summary: "Called on app reload to get the information of currenty logged in user" })
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @ApiOperation({ summary: "Called on app reload to get the information of currenty logged in user" })
   @Get('userInfo')
-  getUserInfo(@Request() req) {
-    return req.user;
+  async getUserInfo(@Request() req): Promise<UserOwnInfoDto> {
+    Logger.log(`Getting profiel for ${req.user.userId}`);
+    const profile = await this.userService.getProfileById(req.user.userId);
+    return profile;
   }
 
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
-  }
 }

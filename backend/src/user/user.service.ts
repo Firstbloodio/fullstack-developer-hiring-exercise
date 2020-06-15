@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Validator, validateOrReject, isEmail } from "class-validator";
 import { strict as assert } from 'assert';
 import { APISafeException, ValidationAPIException } from '../apiexception';
+import { UserOwnInfoDto } from './user.dto';
 
 
 
@@ -30,6 +31,9 @@ class ConfirmationEmailWrongToken extends APISafeException {
 class AlreadyConfirmedEmail extends APISafeException {
 }
 
+class NoSuchUserError extends APISafeException {
+}
+
 @Injectable()
 export class UserService {
 
@@ -45,6 +49,23 @@ export class UserService {
    */
   async findOnePending(email: string): Promise<User> {
     return this.userRepository.findOne({ where: { pendingEmail: email } });
+  }
+
+  /**
+   * Reflect users own info back to him/her
+   */
+  async getProfileById(publicId: string): Promise<UserOwnInfoDto> {
+    const user = await this.userRepository.findOne({ where: { publicId: publicId } });
+
+    if(!user) {
+      throw new NoSuchUserError(`No user with public id ${publicId}`);
+    }
+
+    return {
+      publicId: user.publicId,
+      displayName: user.displayName,
+      email: user.confirmedEmail,
+    }
   }
 
   async findAll(): Promise<User[]> {

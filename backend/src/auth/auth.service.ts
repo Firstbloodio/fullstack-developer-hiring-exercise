@@ -42,6 +42,10 @@ export class AuthService {
    */
   async validateUser(email: string, pass: string): Promise<User> {
 
+    if(!email || !pass) {
+      throw new NoUser(`Email address or password missing`);
+    }
+
     const user: User = await this.userService.findOnePending(email);
 
     if(!user) {
