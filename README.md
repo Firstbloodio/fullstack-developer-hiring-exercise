@@ -186,6 +186,8 @@ docker exec -it local_db psql -U local_dev -c "\dt" local_db
 
 # Further reading
 
+[NestJS and TypeORM migration example](https://github.com/ambroiseRabier/typeorm-nestjs-migration-example)
+
 [NestJS and TypeORM in 30 minutes](https://blog.theodo.com/2019/05/an-overview-of-nestjs-typeorm-release-your-first-application-in-less-than-30-minutes/)
 
 [Another NestJS and TypeORM tutorial](https://blog.echobind.com/up-and-running-nextjs-and-typeorm-2c4dff5d7250)

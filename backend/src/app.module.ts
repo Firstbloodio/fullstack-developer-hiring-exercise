@@ -12,14 +12,15 @@ import { LocalStrategy } from './auth/local.strategy';
 import { join } from 'path';
 import { UserRepository } from './user/user.repository';
 
+
+import * as ormConfig from './config/ormConfig';
+
+console.log("Config", ormConfig);
+
 @Module({
   imports: [
 
-    // Try to work around TypeScript transpiling issues by explicitly
-    TypeOrmModule.forRoot({
-      //autoLoadEntities: true,
-      entities: [join(__dirname, '**', '*.entity.{ts,js}')],
-    }),
+    TypeOrmModule.forRoot(ormConfig),
 
     TypeOrmModule.forFeature([User]),
 
