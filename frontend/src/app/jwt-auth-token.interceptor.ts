@@ -30,7 +30,6 @@ export class JwtAuthTokenInterceptor implements HttpInterceptor {
 
     // Create a new request with auth header added
     const secureReq = request.clone({
-      body: request.body,
       setHeaders: {
         Authorization: `Bearer ${token}`
       }

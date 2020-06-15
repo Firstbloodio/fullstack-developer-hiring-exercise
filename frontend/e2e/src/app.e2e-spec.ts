@@ -38,25 +38,48 @@ describe('End-to-end tests for full stack exercise', () => {
   it('should login with valid username and password', async () => {
     await browser.get(browser.baseUrl);
     // See testing.controller.ts
-    fillField('login', 'testing@exampe.com');
-    fillField('password', 'test123');
+    await fillField('login', 'testing@example.com');
+    await fillField('password', 'test123');
     await element(by.css('.btn-sign-in')).click();
-    expect(element(by.css('.span-user-full-name')).getText()).toBe(name);
+    const dropdown = element(by.css('.dropdown-signed-in'));
+    expect(dropdown.isPresent()).toBe(true);
   });
 
-  it('should give an error for missing user', async () => {
+  it('should give an error for missing form field', async () => {
     await browser.get(browser.baseUrl);
+    fillField('login', 'testing@example.com');
+    await element(by.css('.btn-sign-in')).click();
+    // Machine readable error is passed as data attribute
+    const errorCategory = await element(by.css('.error-login')).getAttribute('data-error-class');
+    expect(errorCategory).toEqual('NoUser');
   });
 
-  it('should give an error for missing password', async () => {
+  it('should give an error for bad password', async () => {
     await browser.get(browser.baseUrl);
+    await fillField('login', 'testing@example.com');
+    await fillField('password', 'wrong');
+    await element(by.css('.btn-sign-in')).click();
+    // Machine readable error is passed as data attribute
+    const errorCategory = await element(by.css('.error-login')).getAttribute('data-error-class');
+    expect(errorCategory).toEqual('InvalidPassword');
+  });
+
+  it('should log out', async () => {
+    await browser.get(browser.baseUrl);
+    // See testing.controller.ts
+    await fillField('login', 'testing@example.com');
+    await fillField('password', 'test123');
+    await element(by.css('.btn-sign-in')).click();
+    // Navigate to log out through menu
+    const dropdown = element(by.css('.dropdown-signed-in'));
+    await dropdown.click();
+    const logout = element(by.css('.dropdown-item-logout'));
+    await logout.click();
+    // Back to the home screen after logout
+    const headingHome = element(by.css('.heading-welcome'));
+    expect(headingHome.isPresent()).toBe(true);
   });
 
   afterEach(async () => {
-    // Assert that there are no errors emitted from the browser
-    const logs = await browser.manage().logs().get(logging.Type.BROWSER);
-    expect(logs).not.toContain(jasmine.objectContaining({
-      level: logging.Level.SEVERE,
-    } as logging.Entry));
   });
 });

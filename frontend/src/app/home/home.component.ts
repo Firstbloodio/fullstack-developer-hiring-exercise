@@ -68,6 +68,8 @@ export class HomeComponent implements OnInit {
       // statusCode: 500
       // timestamp: "2020-06-15T20:27:08.353Z"
 
+      this.logger.error("Authentication error", e);
+
       if(e.error) {
         this.errorMessage = e.error.errorMessage;
         this.errorClass = e.error.errorCategory;

@@ -4,7 +4,7 @@
   <form clrForm class="login">
 
     <section class="title">
-      <h1 class="welcome">Welcome to F<a href="https://en.wikipedia.org/wiki/%C3%9C">ü</a>llstack hiring exercise</h1>
+      <h1 class="welcome heading-welcome">Welcome to F<a href="https://en.wikipedia.org/wiki/%C3%9C">ü</a>llstack hiring exercise</h1>
 
       <h5 class="hint">
         Now starts the part where you demonstrate your skills that you can build
@@ -23,7 +23,7 @@
         <input class="clr-col-12 clr-col-md-12" clrPassword type="password" name="password" placeholder="Password" [(ngModel)]="loginDetails.password" />
       </clr-password-container>
 
-      <div class="error active error-login" *ngIf="errorMessage" data-error-class="errorClass">
+      <div class="error active error-login" *ngIf="errorMessage" [attr.data-error-class]="errorClass">
         {{ errorMessage }}
       </div>
 

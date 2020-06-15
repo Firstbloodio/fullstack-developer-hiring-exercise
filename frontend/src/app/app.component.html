@@ -15,7 +15,7 @@
 
     <div class="header-actions">
 
-      <clr-dropdown *ngIf="user !== null">
+      <clr-dropdown class="dropdown-signed-in" *ngIf="user !== null">
 
         <button class="nav-text" clrDropdownTrigger>
           <clr-icon shape="user"></clr-icon>
@@ -33,7 +33,7 @@
             Billing
           </div>
 
-          <a (click)="logout()" clrDropdownItem>Log out</a>
+          <a class="dropdown-item-logout" (click)="logout()" clrDropdownItem>Log out</a>
         </clr-dropdown-menu>
       </clr-dropdown>
 
