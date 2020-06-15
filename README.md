@@ -24,6 +24,7 @@ The technology stack is the same that you will be using in when working us.
 Task:
 
 - Add a registration screen to an existing Angular application skeleton
+  - The new registration screen is linked from the login screen
   - We need to input the following from the new users:
     - Email
     - Password
@@ -80,7 +81,7 @@ We will look
 - If the task was correctly completed
 - Visual quality of the user interface changes - the layouts must look professional, not broken
 - If the instructions were properly followed
-- All tests pass
+- All tests pass and new functionality is covered by new E2E tests
 - Code comment quality - if your code lacks helpful comments you will be negatively scored for it
 - Pull request description quality - the pull request must look like a professional
 
