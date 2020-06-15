@@ -4,14 +4,12 @@
 
 import { ConnectionOptions } from 'typeorm';
 
-// You can load you .env file here synchronously using dotenv package (not installed here),
-// import * as dotenv from 'dotenv';
-// import * as fs from 'fs';
-// const environment = process.env.NODE_ENV || 'development';
-// const data: any = dotenv.parse(fs.readFileSync(`${environment}.env`));
-// You can also make a singleton service that load and expose the .env file content.
-// ...
+const environment = process.env.NODE_ENV || 'development';
 
+const DATABASES = {
+  development: 'local_db',
+  testing: 'local_db_test',
+}
 
 // Check typeORM documentation for more information.
 const config: ConnectionOptions = {
@@ -20,18 +18,18 @@ const config: ConnectionOptions = {
   port: 54320,
   username: 'local_dev',
   password: 'local_dev',
-  database: 'local_db',
+  database: DATABASES[environment],
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
 
-  // We are using migrations, synchronize should be set to false.
-  synchronize: false,
+  // We are using migrations for dev and production servers
+  synchronize: environment === 'testing',
 
   // Run migrations automatically,
   // you can disable this if you prefer running migration manually.
   migrationsRun: false,
 
   // Echo queries to console?
-  logging: false,
+  logging: environment === 'testing',
   // logger: 'file',
 
   // Allow both start:prod and start:dev to use migrations

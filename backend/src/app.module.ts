@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
@@ -9,6 +8,7 @@ import { AuthService } from './auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auth/constants';
 import { LocalStrategy } from './auth/local.strategy';
+import { TestingController } from './testing/testing.controller';
 import * as ormConfig from './config/ormConfig';
 
 @Module({
@@ -23,7 +23,7 @@ import * as ormConfig from './config/ormConfig';
       signOptions: { expiresIn: '60s' },
     }),
   ],
-  controllers: [AppController, UserController],
+  controllers: [AppController, TestingController],
   providers: [UserService, AppService, AuthService, LocalStrategy],
 })
 export class AppModule {}

@@ -141,14 +141,75 @@ The frontend will open without the backend being up, but as soon as you start wo
 You can start the backend as:
 
 ```sh
-( cd backend && npm run start )
+( cd backend && npm run start:dev )
 ```
 
 Swagger UI is available at http://localhost:3000/api/ to directly test API calls against the backend.
 
 ## Running tests
 
-TODO
+### Creating tests database
+
+Only integration tests are supported. Backend is spun up on a special database.
+Frontend then exercises tests against this backend and database using Protractor.
+Protractor calls special API functions in `testing` module to fix backend state between tests.
+
+Tests use their own database. To create it:
+
+```sh
+docker exec -it local_db psql -U local_dev -c "create database local_db_test" local_db
+```
+
+Note that in `backend/config/ormConfig.ts` the `local_db_test` database
+is configured to synchronize TypeORM migrations automatically, unlike
+the dvelopment database.
+
+### Running tests
+
+To run tests - first spin up the backend:
+
+```sh
+( cd backend && NODE_ENV=testing npm run start:dev )
+```
+
+Then in another terminal you can run Protractor test:
+
+```sh
+( cd frontend && ng e2e )
+```
+
+### Debugging tests
+
+[Angular end-to-end testing is in a bad shape](https://github.com/angular/angular-cli/issues/16683).
+Currently Visual Studio Code debugger does not work directly with `ng e2e`.
+
+To debug tests
+
+- Turn on the debugger auto attach in Visual Studio Code through the command palette
+- Start `ng serve` in one terminal to have Angular frontend running for Protractor
+- In another terminal, run `node --inspect-brk node_modules/.bin/protractor e2e/protractor.conf.js`
+  and now Visual Studio Code will stop in breakpoints set in the test files
+- You can use Web Console Inspector in Protractor's Chrome instance to figure out state of the forms and buttons for the e2e tests
+
+What does not work
+
+- `node --inspect-brk node_modules/.bin/ng`: For some reason breakpoints get ignored if `ng e2e` is run directly
+- Running Protractor without starting a frontend manually: `ng e2e` is responsible for doing Angular setup
+
+To launch `ng e2e` in debug mode you can add the following example to your launch configurations:
+
+```json
+    {
+      "name": "Fullstack ng e2e",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/frontend/node_modules/protractor/bin/protractor",
+      "protocol": "inspector",
+      "args": ["${workspaceFolder}/frontend/e2e/protractor.conf.js"],
+      "runtimeExecutable": "/Users/moo/.nvm/versions/node/v12.16.1/bin/node"
+    }
+```
+
 
 ## Migrations
 

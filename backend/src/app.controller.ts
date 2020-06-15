@@ -65,7 +65,6 @@ export class AppController {
   // @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Body() data: LoginDetails): Promise<AuthInfo> {
-    console.log("foo");
     return this.authService.login(data);
   }
 
