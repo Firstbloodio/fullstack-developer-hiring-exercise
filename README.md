@@ -238,21 +238,13 @@ What does not work
 
 You can generate migration files
 
-1) After updating entity source code
+1) Update entity source code in backend
 
 2) You have an up-to-date local development database
 
 ```bash
-
-# Rebuild transpilation
-npm run build
-
-# You need to start and stop the dev server to generate dist/migrations
-# NestJS bug https://github.com/nrwl/nx/issues/1393
-npm run start
-
-# Create a file under migration/
-npm run migration:generate -- -n CreateUsers
+# Creates a file under src/migrations/
+npm run typeorm -- migration:generate -n CreateUsers
 ```
 
 ## Run migrations against a local db
