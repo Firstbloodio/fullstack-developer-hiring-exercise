@@ -34,7 +34,8 @@ Task:
 - Add server-side validation for the registration data
   - Validation must catch basic error cases
   - Saved phone numbers must be normalized by removing any spaces or dashes or other
-    special characters users may use when entering a phone number, like `+15551231234`
+    special characters users may use when entering a phone number -
+    the string going to the database must look like `+15551231234`
   - The registration screen must be user friendly and correctly
     reflect any given input error back to the user, preferably
     to the related input field
@@ -47,17 +48,17 @@ Task:
 - Add end-to-end tests for the new registration functionality
   - Registration success and a user can log in
     - Note that there is an email verification mechanism present,
-      you may shortcut this for this exercise and consider all emails automatically valid
+      you may shortcut this for this exercise and set all emails automatically confirmed
   - Cannot register the same email twice
   - Cannot register invalid password - must be at least 6 characters
   - Cannot register invalid phone number
   - Phone number is correctly normalized
   - The dashboard displays the registered phone number of the user
 
-- Pull request which will be reviewed
-  - Contains screenshots of changed screens
-  - Contains instructions how to apply TypeORM migrations
-  - Contains instructions for an internal QA team (the exercise author, or me) how to manually test your pull request
+- Open a pull request which will be reviewed
+  - Commentary contains screenshots of changed screens
+  - Commentary contains instructions how to apply TypeORM migrations
+  - Commentary contains instructions for an internal QA team (the exercise author, or me) how to manually test your pull request
     assuming they run the application locally on their computer
 
 ## How to submit the exercise
@@ -266,7 +267,7 @@ npm run typeorm -- migration:generate -n CreateUsers
 npm run typeorm -- migration:run
 ```
 
-Check the result of migrations using `psql` command line tool:
+Check the result of migrations using `psql` command-line tool:
 
 ```bash
 docker exec -it local_db psql -U local_dev local_db
