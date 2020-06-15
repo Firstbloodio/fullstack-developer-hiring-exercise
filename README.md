@@ -2,6 +2,9 @@
 
 This is a software development exercise for a FirstBlood Technologies full stack developer position.
 
+If you have not applied yet, apply through [StackOverlow page](https://stackoverflow.com/jobs/393512/typescript-full-stack-developer-firstblood).
+This exercise is open only for candidates who we have send an email to complete the exercise.
+
 - [See the open position description on StackOverflow](https://stackoverflow.com/jobs/393512/typescript-full-stack-developer-firstblood)
 
 - [Read more about our hiring process](https://github.com/miohtama/how-to-hire-developers)
