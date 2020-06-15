@@ -6,7 +6,10 @@ import { ValidationError } from 'class-validator';
 
 /**
  * An exception filter that echoes back safe errors from deeper in the application over the API.
- *  
+ *
+ * You can raise APISafeException anywhere in the application and NestJS
+ * filter will turn it to a friendly HTTP 500 JSON error message.
+ *
  */
 @Catch(APISafeException)
 export class APIHttpExceptionFilter implements ExceptionFilter {

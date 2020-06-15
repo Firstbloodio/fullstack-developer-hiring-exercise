@@ -19,7 +19,9 @@ async function bootstrap() {
 
   Logger.log(`Register a new user ${email} ${displayName} ${password}`);
   await userService.register(email, displayName, password);
-  Logger.log(`User ${email} created`);
+  const user = await userService.confirmEmailForced(email);
+  const uuid = user.publicId;
+  Logger.log(`User ${email} created with primary key ${user.id} and public UUID ${uuid}`);
 }
 
 bootstrap();

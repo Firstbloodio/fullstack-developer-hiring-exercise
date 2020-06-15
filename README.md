@@ -144,6 +144,8 @@ You can start the backend as:
 ( cd backend && npm run start )
 ```
 
+Swagger UI is available at http://localhost:3000/api/ to directly test API calls against the backend.
+
 ## Running tests
 
 TODO

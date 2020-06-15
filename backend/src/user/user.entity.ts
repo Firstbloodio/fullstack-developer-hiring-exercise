@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, Generated, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { IsEmail, IsOptional } from 'class-validator';
 import * as bcrypt from 'bcrypt';
+import { strict as assert } from 'assert';
 
 
 /**
@@ -75,7 +76,11 @@ export class User {
   @Column({select: false, nullable: true })
   passwordHash: string;
 
-  // Can this user login - the email registratoin is valid
+  /**
+   * Can this user login?
+   *
+   * The user cannot login until the verification link has been confirmed.
+   */
   canLogIn(): boolean {
       return this.emailConfirmationCompletedAt != null;
   }
@@ -92,6 +97,8 @@ export class User {
   }
 
   async isRightPassword(password: string): Promise<boolean> {
+    assert(password, "Password missing");
+    assert(this.passwordHash, "Password hash missing");
     const match = await bcrypt.compare(password, this.passwordHash);
     return match;
   }

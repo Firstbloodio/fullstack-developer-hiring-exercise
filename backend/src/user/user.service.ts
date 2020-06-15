@@ -36,6 +36,17 @@ export class UserService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {
   }
 
+  /**
+   * Get user by its emai.
+   *
+   * Consider all users, even those that cannot log in yet.
+   *
+   * @param email
+   */
+  async findOnePending(email: string): Promise<User> {
+    return this.userRepository.findOne({ where: { pendingEmail: email } });
+  }
+
   async findAll(): Promise<User[]> {
     return await this.userRepository.find();
   }
@@ -83,6 +94,8 @@ export class UserService {
     // TODO: Add a crypto secure user reasdable random token
     // https://stackoverflow.com/a/47496558/315168
     u.emailConfirmationToken = [...Array(16)].map(() => Math.random().toString(36)[2]).join('');
+
+    u.resetPassword(password);
 
     // Run application level validators like IsEmail()
     try {
@@ -153,7 +166,7 @@ export class UserService {
    * Use in testing - does not do error checking.
    *
    */
-  async confirmEmailAdmin(email: string, now_:Date = null): Promise<User> {
+  async confirmEmailForced(email: string, now_:Date = null): Promise<User> {
 
       // Allow override time for testing
       if(!now_) {
