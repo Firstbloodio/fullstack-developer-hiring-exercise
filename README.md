@@ -234,6 +234,8 @@ What does not work
 
 ## Migrations
 
+Run `typeorm` CLI in `backend` folder.
+
 ### Automatically generating migrations
 
 You can generate migration files
@@ -247,15 +249,20 @@ You can generate migration files
 npm run typeorm -- migration:generate -n CreateUsers
 ```
 
-## Run migrations against a local db
+## Apply migrations against the local database
 
 ```bash
-npm run migration:run
+npm run typeorm -- migration:run
 ```
 
-Check the result of migrations - new tables should be now in the database
+Check the result of migrations using `psql` command line tool:
+
 ```bash
-docker exec -it local_db psql -U local_dev -c "\dt" local_db
+docker exec -it local_db psql -U local_dev local_db
+```
+
+```psql
+\d 'user'
 ```
 
 # Further reading
