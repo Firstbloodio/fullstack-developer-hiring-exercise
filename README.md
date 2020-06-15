@@ -19,16 +19,16 @@ Your task is to create a registration form for Angular 9 + NestJS application. W
     - Email
     - Password
     - Display name
-    - Phone number in international plus prefixed format
+    - Phone number in an international plus prefixed format, like `+1 555 1231234`
   - Use your best practices and Clarity Design System examples to come up
     a basic layout form this screen
 
-- Add phone to the dashboard screen, so that users can see their registered phone number
+- Add a phone number to the dashboard screen, so that users can see their registered phone number
 
 - Add server-side entity validation for the registration data using NestJS backend
   - Validation must catch basic error cases
   - Saved phone numbers must be normalized by removing any spaces or dashes or other
-    special characters users may use when entering a phone number
+    special characters users may use when entering a phone number, like `+15551231234`
   - The registration screen must be user friendly and correctly
     reflect any given input error back to the user
 
@@ -42,10 +42,10 @@ Your task is to create a registration form for Angular 9 + NestJS application. W
     - Note that there is an email verification mechanism present,
       you may shortcut this for this exercise and consider all emails automatically valid
   - Cannot register the same email twice
-  - Cannot register invalid email
-  - Cannot register with invalid password - must be at least 6 characters
+  - Cannot register invalid password - must be at least 6 characters
   - Cannot register invalid phone number
-  - Dashboard displays the registered phone number to user
+  - Phone number is correctly normalized
+  - The dashboard displays the registered phone number of the user
 
 - Pull request which will be reviewed
   - Contains screenshots of changed screens
