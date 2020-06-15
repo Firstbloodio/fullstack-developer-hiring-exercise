@@ -95,14 +95,16 @@ export class UserService {
     // https://stackoverflow.com/a/47496558/315168
     u.emailConfirmationToken = [...Array(16)].map(() => Math.random().toString(36)[2]).join('');
 
-    u.resetPassword(password);
+    // Set the initial password
+    await u.resetPassword(password);
+    assert(u.passwordHash, 'Setting initial password failed');
 
     // Run application level validators like IsEmail()
     try {
-        await validateOrReject(u);
+      await validateOrReject(u);
     } catch(e) {
-        // Convert to friendlier exception
-        throw ValidationAPIException.createFromValidationOutput(e);
+      // Convert to friendlier exception
+      throw ValidationAPIException.createFromValidationOutput(e);
     }
 
     // We do not have any email out integration in this execrise
@@ -167,29 +169,30 @@ export class UserService {
    *
    */
   async confirmEmailForced(email: string, now_:Date = null): Promise<User> {
+    // Allow override time for testing
+    if(!now_) {
+        now_ = new Date();
+    }
 
-      // Allow override time for testing
-      if(!now_) {
-          now_ = new Date();
-      }
+    await this.checkConfirmedEmail(email);
 
-      await this.checkConfirmedEmail(email);
+    const record = await this.userRepository.findOneOrFail({pendingEmail: email})
 
-      const record = await this.userRepository.findOneOrFail({pendingEmail: email})
-      record.confirmedEmail = record.pendingEmail;
-      record.emailConfirmationCompletedAt = now_;
-      record.emailConfirmationToken = null;
+    assert(record.passwordHash, 'Password missing when confirming email');
+    record.confirmedEmail = record.pendingEmail;
+    record.emailConfirmationCompletedAt = now_;
+    record.emailConfirmationToken = null;
 
-      // Run application level validators like IsEmail()
-      try {
-          await validateOrReject(record);
-      } catch(e) {
-          // Convert to friendlier exception
-          throw ValidationAPIException.createFromValidationOutput(e);
-      }
+    // Run application level validators like IsEmail()
+    try {
+        await validateOrReject(record);
+    } catch(e) {
+        // Convert to friendlier exception
+        throw ValidationAPIException.createFromValidationOutput(e);
+    }
 
-      await this.userRepository.save(record);
-      return record;
-  }
+    await this.userRepository.save(record);
+    return record;
+}
 
 }

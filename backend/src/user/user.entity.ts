@@ -73,7 +73,7 @@ export class User {
   securityOperationPerformedAt: Date;
 
   // A hashed password - can be null for users created from OAuth sourced like Facebook
-  @Column({select: false, nullable: true })
+  @Column({ nullable: true })
   passwordHash: string;
 
   /**
@@ -82,7 +82,7 @@ export class User {
    * The user cannot login until the verification link has been confirmed.
    */
   canLogIn(): boolean {
-      return this.emailConfirmationCompletedAt != null;
+    return (this.emailConfirmationCompletedAt !== null) && (this.passwordHash !== null);
   }
 
   /**
@@ -90,9 +90,10 @@ export class User {
    */
   async resetPassword(newPassword: string): Promise<void> {
     // https://www.npmjs.com/package/bcrypt#with-promises
-    const hash = await bcrypt.hash(newPassword, User.SALT_ROUNDS)
+    const hash = await bcrypt.hash(newPassword, User.SALT_ROUNDS);
+    assert(hash, "bcrypt did not give a password hash");
     this.passwordHash = hash;
-    // Force user log out
+    // Force user to log out from existing sessions
     this.securityOperationPerformedAt = new Date();
   }
 
