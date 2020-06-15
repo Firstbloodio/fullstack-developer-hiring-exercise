@@ -1,7 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column, Generated, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import {IsEmail, IsOptional} from 'class-validator';
+import { IsEmail, IsOptional } from 'class-validator';
 import * as bcrypt from 'bcrypt';
 
+
+/**
+ * Store site user details in a database.
+ *
+ * Support safe email verification and password reset mechanisms.
+ */
+@Entity()
 export class User {
 
   // How long we wait for the user to click confirmation email when creating a new account
@@ -19,11 +26,11 @@ export class User {
   // Nice columns for internal statistics and diagnostics
   // We assume all servers tick UTC, but we always preserve timezone for
   // our sanity when something gets messy
-  @CreateDateColumn({ type: 'timestamptz', name: 'create_date', default: () => 'LOCALTIMESTAMP' })
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'LOCALTIMESTAMP' })
   createdAt: Date;
 
   // Nice columns for internal statistics and diagnostics
-  @UpdateDateColumn({ type: 'timestamptz', name: 'update_date', default: () => 'LOCALTIMESTAMP' })
+  @UpdateDateColumn({ type: 'timestamptz', default: () => 'LOCALTIMESTAMP' })
   updatedAt: Date;
 
   // Already refer users by this id when in the APIs .
@@ -61,7 +68,7 @@ export class User {
 
   // Set when user resets password, when user is forcefully banned, etc.
   // If securityOperationPerformedAt > session created at, terminate the user session
-  @Column({ type: 'timestamptz', nullable: true})
+  @Column({ type: 'timestamptz', default: () => 'LOCALTIMESTAMP'})
   securityOperationPerformedAt: Date;
 
   // A hashed password - can be null for users created from OAuth sourced like Facebook
@@ -73,6 +80,9 @@ export class User {
       return this.emailConfirmationCompletedAt != null;
   }
 
+  /**
+   * Sets the user password and resets the existing logged in session.
+   */
   async resetPassword(newPassword: string): Promise<void> {
     // https://www.npmjs.com/package/bcrypt#with-promises
     const hash = await bcrypt.hash(newPassword, User.SALT_ROUNDS)

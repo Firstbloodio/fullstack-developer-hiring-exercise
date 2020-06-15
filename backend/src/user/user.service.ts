@@ -15,6 +15,12 @@ class UserExists extends APISafeException {
 class BadEmailError extends APISafeException {
 }
 
+class BadPasswordError extends APISafeException {
+}
+
+class BadDisplayNameError extends APISafeException {
+}
+
 class ConfirmationEmailExpiredError extends APISafeException {
 }
 
@@ -34,30 +40,49 @@ export class UserService {
     return await this.userRepository.find();
   }
 
+  /**
+   * Register a new email based user to the service
+   *
+   * Throws various APISafeExceptions on errors.
+   *
+   * @param email User's email
+   * @param displayName Gamer tag the user wants to use
+   * @param password User's initial password
+   */
   async register(email: string, displayName: string, password: string): Promise<User> {
-
-    email = email.toLowerCase();
 
     if(!email) {
       throw new BadEmailError(`Email must be given`);
     }
 
-    let existing = await this.userRepository.findOne({confirmedEmail: email});
+    if(!password) {
+      throw new BadPasswordError(`Initial password must be given`);
+    }
+
+    if(!displayName) {
+      throw new BadDisplayNameError(`Initial displayName missing`);
+    }
+
+    email = email.toLowerCase();
+
+    let existing = await this.userRepository.findOne({pendingEmail: email});
     if(existing) {
-        throw new UserExists(`The user with email ${email} exists`)
+      throw new UserExists(`The user with email ${email} exists`)
     }
 
     existing = await this.userRepository.findOne({displayName});
     if(existing) {
-        throw new UserExists(`The user with name ${displayName} exists`)
+      throw new UserExists(`The user with name ${displayName} exists`)
     }
 
     const u = new User();
     u.displayName = displayName;
     u.pendingEmail = email;
     u.emailConfirmationRequestedAt = new Date();
+
+    // TODO: Add a crypto secure user reasdable random token
     // https://stackoverflow.com/a/47496558/315168
-    u.emailConfirmationToken = [...Array(16)].map(() => Math.random().toString(36)[2]).join(''); // TODO: Add a crypto secure user reasdable random token
+    u.emailConfirmationToken = [...Array(16)].map(() => Math.random().toString(36)[2]).join('');
 
     // Run application level validators like IsEmail()
     try {

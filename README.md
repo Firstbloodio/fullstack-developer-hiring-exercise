@@ -98,6 +98,12 @@ Check that you can log into a database with `psql`
 docker exec -it local_db psql -U local_dev local_db
 ```
 
+View tables
+
+```psql
+\dt
+```
+
 ## Creating the initial database
 
 You need to have the backend installed
@@ -110,6 +116,12 @@ Run initial migrations to set up initial database tables
 
 ```bash
 ( cd backend && npm run migration:run )
+```
+
+Create a user you can use for the initial login
+
+```bash
+( cd backend && ts-node src/scripts/addUser.ts --email=admin@example.com --displayName=ImperatorFuriosa --password=admin )
 ```
 
 # Development
@@ -134,7 +146,55 @@ You can start the backend as:
 
 ## Running tests
 
+TODO
+
+## Migrations
+
+### Automatically generating migrations
+
+You can generate migration files
+
+1) After updating entity source code
+
+2) You have an up-to-date local development database
+
+```bash
+
+# Rebuild transpilation
+npm run build
+
+# You need to start and stop the dev server to generate dist/migrations
+# NestJS bug https://github.com/nrwl/nx/issues/1393
+npm run start
+
+# Create a file under migration/
+npm run migration:generate -- -n CreateUsers
+```
+
+## Run migrations against a local db
+
+```bash
+npm run migration:run
+```
+
+Check the result of migrations - new tables should be now in the database
+```bash
+docker exec -it local_db psql -U local_dev -c "\dt" local_db
+```
+
 # Further reading
+
+[NestJS and TypeORM in 30 minutes](https://blog.theodo.com/2019/05/an-overview-of-nestjs-typeorm-release-your-first-application-in-less-than-30-minutes/)
+
+[Another NestJS and TypeORM tutorial](https://blog.echobind.com/up-and-running-nextjs-and-typeorm-2c4dff5d7250)
+
+[PostgreSQL on Dockerhub](https://hub.docker.com/_/postgres)
+
+[class-validator](https://github.com/typestack/class-validator)
+
+[Cats NestJS + Swagger sample full example code](https://github.com/nestjs/nest/tree/master/sample/11-swagger)
+
+[Testing database interaction with TypeORM](https://medium.com/@salmon.3e/integration-testing-with-nestjs-and-typeorm-2ac3f77e7628) and [related source code](https://github.com/p-salmon/nestjs-typeorm-integration-tests)
 
 # Artwork
 
