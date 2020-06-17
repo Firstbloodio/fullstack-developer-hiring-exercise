@@ -179,10 +179,11 @@ Frontend runs in port 4200.
 You can start the frontend as:
 
 ```sh
-( cd frontend && ng server )
+( cd frontend && ng serve )
 ```
 
-The frontend will open without the backend being up, but as soon as you start working with you need to have the backend up'n'running.
+The frontend will open without the backend being up, but as soon as you start working with you need to have the backend up'n'running,
+so please continue below.
 
 ## Running backend
 
