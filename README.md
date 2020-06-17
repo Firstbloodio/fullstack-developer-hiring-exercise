@@ -176,6 +176,12 @@ Create a user you can use for the initial login
 
 Frontend runs in port 4200.
 
+First do NPM installation:
+
+```sh
+( cd frontend && npm install )
+```
+
 You can start the frontend as:
 
 ```sh
