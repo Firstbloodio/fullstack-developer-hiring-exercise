@@ -6,7 +6,7 @@ import { APIHttpExceptionFilter } from '../http-exception.filter';
 import { APISafeException } from '../apiexception';
 import { User } from '../user/user.entity';
 import { Repository } from 'typeorm';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 
 
 /**
