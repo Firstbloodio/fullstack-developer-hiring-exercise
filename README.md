@@ -167,7 +167,7 @@ Run initial migrations to set up initial database tables
 Create a user you can use for the initial login
 
 ```bash
-( cd backend && ts-node src/scripts/addUser.ts --email=admin@example.com --displayName=ImperatorFuriosa --password=admin )
+( cd backend && node_modules/.bin/ts-node src/scripts/addUser.ts --email=admin@example.com --displayName=ImperatorFuriosa --password=admin )
 ```
 
 # Development
