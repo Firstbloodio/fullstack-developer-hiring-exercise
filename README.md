@@ -161,7 +161,7 @@ You need to have the backend installed
 Run initial migrations to set up initial database tables
 
 ```bash
-( cd backend && npm run migration:run )
+( cd backend && npm run typeorm -- migration:run )
 ```
 
 Create a user you can use for the initial login
