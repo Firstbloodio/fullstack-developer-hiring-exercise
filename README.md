@@ -32,6 +32,7 @@ Task:
     - Phone number in an international plus prefixed format, like `+1 555 1231234`
   - Use your best practices and Clarity Design System examples to come up
     a basic non-ugly layout for this screen
+  - The screen can sit in its own route  
 
 - Add a phone number to the existing dashboard screen, so that users can see their registered phone number
 
