@@ -96,6 +96,84 @@ describe('End-to-end tests for full stack exercise', () => {
     expect(headingHome.isDisplayed()).toBe(true);
   });
 
+  it('should register account with valid values', async () => {
+    await browser.get(browser.baseUrl);
+    await element(by.css('.signup')).click();
+    await fillField('login', 'oreofeolurin@gmail.com');
+    await fillField('displayName', 'Oreofe Olurin');
+    await fillField('phone', '+2348189681252');
+    await fillField('password', 'password');
+    await element(by.css('.btn-register')).click();
+    const alert = element(by.css('.account-created-success'));
+    expect(alert.isPresent()).toBe(true);
+  })
+
+  it('should not register the same email twice', async () => {
+    await browser.get(browser.baseUrl);
+    await element(by.css('.signup')).click();
+    await fillField('login', 'testing@example.com');
+    await fillField('displayName', 'Oreofe Olurin');
+    await fillField('phone', '+2348189681252');
+    await fillField('password', 'password');
+    await element(by.css('.btn-register')).click();
+    const alert = element(by.css('.error-login'));
+    expect(alert.isPresent()).toBe(true);
+  })
+
+  it('should not register with invalid password', async () => {
+    await browser.get(browser.baseUrl);
+    await element(by.css('.signup')).click();
+    await fillField('login', 'oreofeolurin@gmail.com');
+    await fillField('displayName', 'Oreofe Olurin');
+    await fillField('phone', '+2348189681252');
+    await fillField('password', 'pass');
+    await element(by.css('.btn-register')).click();
+    const alert = element(by.css('.error-login'));
+    expect(alert.isPresent()).toBe(true);
+  })
+
+
+  it('should not register with invalid phone', async () => {
+    await browser.get(browser.baseUrl);
+    await element(by.css('.signup')).click();
+    await fillField('login', 'oreofeolurin@gmail.com');
+    await fillField('displayName', 'Oreofe Olurin');
+    await fillField('phone', 'hdhj-j6812-52dnnnn');
+    await fillField('password', 'password');
+    await element(by.css('.btn-register')).click();
+    const alert = element(by.css('.error-login'));
+    expect(alert.isPresent()).toBe(true);
+  })
+
+
+  it('should register with un-normalized phone number and be normalized in dashboard', async () => {
+    await browser.get(browser.baseUrl);
+
+    // Procced to register page and register
+    await element(by.css('.signup')).click();
+    await fillField('login', 'oreofeolurin@gmail.com');
+    await fillField('displayName', 'Oreofe Olurin');
+    await fillField('phone', '+234-818-9681-252');
+    await fillField('password', 'password');
+    await element(by.css('.btn-register')).click();
+
+    //Proceed to login
+    await element(by.css('.login-btn')).click();
+    await fillField('login', 'oreofeolurin@gmail.com');
+    await fillField('password', 'password');
+    await element(by.css('.btn-sign-in')).click();
+
+    // Check we are on the right page
+    const headingDashboard = element(by.css('#heading-dashboard'));
+    expect(headingDashboard.isDisplayed()).toBe(true);
+
+    // Check if phone numbers are normalized
+    const phone = await element(by.css('#user-phone')).getText()
+    expect(phone).toEqual('+2348189681252');
+
+
+  })
+
   afterEach(async () => {
   });
 });

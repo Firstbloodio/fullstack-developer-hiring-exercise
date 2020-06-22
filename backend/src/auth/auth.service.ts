@@ -80,6 +80,7 @@ export class AuthService {
       userDetails: {
         email: user.confirmedEmail,
         displayName: user.displayName,
+        phone: user.phone,
         publicId: user.publicId,
       }
     };

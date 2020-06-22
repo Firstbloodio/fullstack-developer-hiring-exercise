@@ -12,4 +12,5 @@ export class UserOwnInfoDto {
     readonly displayName: string;
     readonly email: string;
     readonly publicId: string;
+    readonly phone: string;
 }

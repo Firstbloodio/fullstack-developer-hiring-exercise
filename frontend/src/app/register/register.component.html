@@ -1,0 +1,68 @@
+<div class="login-wrapper">
+
+
+
+  <form clrForm class="login" #registerForm="ngForm">
+
+    <div *ngIf="state == states.accountCreated" class="alert alert-success account-created-success" role="alert">
+      <div class="alert-items">
+        <div class="alert-item static">
+          <div class="alert-icon-wrapper">
+            <clr-icon class="alert-icon" shape="check-circle"></clr-icon>
+          </div>
+          <span class="alert-text">Congrats, your account has been succesfully created, please you can login <a
+              routerLink='/home'>here</a>.</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="title">
+      <h1 class="welcome heading-welcome">Create an account for the F<a
+          href="https://en.wikipedia.org/wiki/%C3%9C">ü</a>llstack hiring exercise</h1>
+
+      <h5 class="hint">
+        Now starts the part where you demonstrate your skills that you can build
+        solid web applications.
+      </h5>
+    </section>
+
+    <div class="login-group">
+
+      <clr-input-container>
+        <label class="clr-sr-only">Email</label>
+        <input class="clr-col-12 clr-col-md-12" clrInput type="email" name="login" placeholder="Email"
+          [(ngModel)]="registerDetails.email" />
+      </clr-input-container>
+
+      <clr-input-container>
+        <label class="clr-sr-only">Display Name</label>
+        <input class="clr-col-12 clr-col-md-12" clrInput type="text" name="displayName" placeholder="Display Name"
+          [(ngModel)]="registerDetails.displayName" />
+      </clr-input-container>
+
+      <clr-input-container>
+
+
+        <label class="clr-sr-only">Phone</label>
+        <input class="clr-col-12 clr-col-md-12" clrInput type="text" name="phone" placeholder="Phone"
+          [(ngModel)]="registerDetails.phone" />
+      </clr-input-container>
+
+      <clr-password-container>
+        <label class="clr-sr-only">Password</label>
+        <input class="clr-col-12 clr-col-md-12" clrPassword type="password" name="password" placeholder="Password"
+          [(ngModel)]="registerDetails.password" />
+      </clr-password-container>
+
+      <div class="error active error-login" *ngIf="errorMessage" [attr.data-error-class]="errorClass">
+        {{ errorMessage }}
+      </div>
+
+      <button [clrLoading]="state == states.waitingApi" class="btn btn-primary btn-register" type="button"
+        (click)="register(registerForm)">Register</button>
+      <a routerLink='/home' class="login-btn">Login to your account</a>
+
+
+    </div>
+  </form>
+</div>

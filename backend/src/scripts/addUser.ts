@@ -16,11 +16,11 @@ async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule);
   const userService = app.get(UserService)
 
-  const { email, password, displayName } = argv;
+  const { email, password, displayName, phone } = argv;
 
   Logger.log(`Register a new user ${email} ${displayName} ${password}`);
 
-  const u = await userService.register(email, displayName, password);
+  const u = await userService.register(email, displayName, password, phone);
   assert(u.passwordHash);
 
   const user = await userService.confirmEmailForced(email);

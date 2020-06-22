@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
-import { Validator, validateOrReject, isEmail } from "class-validator";
+import { Validator, validateOrReject, isEmail, min, minLength } from "class-validator";
 import { strict as assert } from 'assert';
 import { APISafeException, ValidationAPIException } from '../apiexception';
 import { UserOwnInfoDto } from './user.dto';
-
-
+import { PhoneUtils } from 'src/helpers/phone.utils';
+import { MIN_PASSWORD_LENGHT } from 'src/helpers/constants';
 
 // Some common error conditions
 class UserExists extends APISafeException {
@@ -20,6 +20,9 @@ class BadPasswordError extends APISafeException {
 }
 
 class BadDisplayNameError extends APISafeException {
+}
+
+class BadPhoneError extends APISafeException {
 }
 
 class ConfirmationEmailExpiredError extends APISafeException {
@@ -65,6 +68,7 @@ export class UserService {
       publicId: user.publicId,
       displayName: user.displayName,
       email: user.confirmedEmail,
+      phone: user.phone,
     }
   }
 
@@ -81,7 +85,7 @@ export class UserService {
    * @param displayName Gamer tag the user wants to use
    * @param password User's initial password
    */
-  async register(email: string, displayName: string, password: string): Promise<User> {
+  async register(email: string, displayName: string, password: string, phone: string): Promise<User> {
 
     if(!email) {
       throw new BadEmailError(`Email must be given`);
@@ -91,8 +95,16 @@ export class UserService {
       throw new BadPasswordError(`Initial password must be given`);
     }
 
+    if(!minLength(password, MIN_PASSWORD_LENGHT)) {
+      throw new BadPasswordError(`Password length be greater than 6`);
+    }
+
     if(!displayName) {
       throw new BadDisplayNameError(`Initial displayName missing`);
+    }
+
+    if(!phone) {
+      throw new BadPhoneError(`Initial phone must be given`);
     }
 
     email = email.toLowerCase();
@@ -107,12 +119,19 @@ export class UserService {
       throw new UserExists(`The user with name ${displayName} exists`)
     }
 
+    existing = await this.userRepository.findOne({phone});
+    if(existing) {
+      throw new UserExists(`The user with name ${phone} exists`)
+    }
+
     const u = new User();
     u.displayName = displayName;
     u.pendingEmail = email;
+    u.phone = phone;
+    u.phone = PhoneUtils.format(phone);
     u.emailConfirmationRequestedAt = new Date();
 
-    // TODO: Add a crypto secure user reasdable random token
+    // TODO: Add a crypto secure user readable random token
     // https://stackoverflow.com/a/47496558/315168
     u.emailConfirmationToken = [...Array(16)].map(() => Math.random().toString(36)[2]).join('');
 
@@ -214,6 +233,13 @@ export class UserService {
 
     await this.userRepository.save(record);
     return record;
+}
+
+validatePhone() {
+  const PNF = require('google-libphonenumber').PhoneNumberFormat;
+  
+  // Get an instance of `PhoneNumberUtil`.
+  const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 }
 
 }

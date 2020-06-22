@@ -13,6 +13,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtAuthTokenInterceptor } from './jwt-auth-token.interceptor';
 import { HttpClientModule } from '@angular/common/http';
 import { LoggerModule, NgxLoggerLevel, LoggerConfig } from 'ngx-logger';
+import { RegisterComponent } from './register/register.component';
 
 
 // A trick to enable logging in the production.
@@ -33,6 +34,7 @@ const loggerConfig: LoggerConfig = {
     AppComponent,
     DashboardComponent,
     HomeComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

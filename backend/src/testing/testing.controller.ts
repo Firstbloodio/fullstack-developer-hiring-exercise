@@ -54,7 +54,7 @@ export class TestingController {
     await this.userRepository.clear();
 
     Logger.log('Creating default testing user');
-    await this.userService.register("testing@example.com", "Test-Moo", "test123");
+    await this.userService.register("testing@example.com", "Test-Moo", "test123", "+1-202-456-1414");
     await this.userService.confirmEmailForced("testing@example.com");
     return 'OK'
   }

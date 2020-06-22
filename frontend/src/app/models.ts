@@ -9,4 +9,7 @@ export class User {
   // UUID of the user
   publicId: string;
 
+  // Phone number of the user
+  phone: string;
+
 }
