@@ -31,13 +31,19 @@ export class TestingGuard implements CanActivate {
 }
 
 
+/**
+ * Add special API endpoints for resetting the database and creating test entities.
+ *
+ * The test script directly calls these endpoints with HTTP (Axios client).
+ */
 @Injectable()
 @Controller('testing')
 @UseGuards(TestingGuard)
 @UseFilters(new APIHttpExceptionFilter())  // Nice error handling
 export class TestingController {
 
-  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>, private userService: UserService) {
+  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>,
+    private userService: UserService) {
   }
 
   @Get()
